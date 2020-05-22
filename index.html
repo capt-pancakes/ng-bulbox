@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/bulma/css/bulma.min.css">
+</head>
+
+<body>
+    <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+    <script>
+        angular.module('ngbulbox', [])
+            .controller('exampleController', ['$scope', function ($scope) {
+                $scope.userType = 'guest';
+            }]);
+    </script>
+    <div ng-app="ngbulbox">
+        <div ng-controller="exampleController">
+            <h3>{{userType}}</h3>
+        </div>
+    </div>
+</body>
+</html>
