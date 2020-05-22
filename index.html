@@ -11,15 +11,14 @@
 
 <body>
     <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
-    <script>
-        angular.module('ngbulbox', [])
-            .controller('exampleController', ['$scope', function ($scope) {
-                $scope.userType = 'guest';
-            }]);
-    </script>
-    <div ng-app="ngbulbox">
+    <script type="text/javascript" src="src/bulbox.js"></script>
+    <script type="text/javascript" src="src/ng-bulbox.js"></script>
+
+    <script type="text/javascript" src="app.js"></script>
+    <div ng-app="app">
         <div ng-controller="exampleController">
             <h3>{{userType}}</h3>
+            <button ng-click="showConfirm()"> Click me</button>
         </div>
     </div>
 </body>
