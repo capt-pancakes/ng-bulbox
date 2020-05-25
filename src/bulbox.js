@@ -25,10 +25,10 @@ function __dialog() {
   parent.id = "bulbox-diag-" + window.newId();
 
   const backdrop = document.createElement("div");
-  backdrop.className = "modal-background";
+  backdrop.className = "modal-background animate__animated animate__fadeIn animate__faster";
 
   const content = document.createElement("div");
-  content.className = "modal-card";
+  content.className = "modal-card animate__animated animate__fadeInDown" ;
 
   // Card Header
   const contentHeader = document.createElement("div");
@@ -77,8 +77,11 @@ function __dialog() {
 
 function __killDialog(id) {
   const el = document.querySelector('#' + id);
+  el.lastElementChild.className = "modal-card animate__animated animate__fadeOutUp animate__faster	";
+  setTimeout(() => {
+    el.parentNode.removeChild(el);
+  }, 400);
 //   bulmabox.params = bulmabox.params.filter((q) => q.id != id);
-  el.parentNode.removeChild(el);
 }
 
 window["bulbox"] = bulbox;
