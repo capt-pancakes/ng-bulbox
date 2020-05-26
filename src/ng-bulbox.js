@@ -62,7 +62,7 @@ angular.module('ngBulbox', [])
           getTemplate(options.templateUrl)
             .then(function (template) {
               options.scope = options.scope || $rootScope;
-              options.message = $compile(template)(options.scope);
+              options.body = $compile(template)(options.scope);
               $window.bulbox.dialog(options);
             }, function () { //Show default dialog if no template could be found
               $window.bulbox.dialog(options);
@@ -94,7 +94,6 @@ angular.module('ngBulbox', [])
 
     function getTemplate(templateId) {
       var def = $q.defer();
-
       var template = $templateCache.get(templateId);
       if (typeof template === "undefined") {
         $http.get(templateId)
