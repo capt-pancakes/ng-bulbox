@@ -1,0 +1,19 @@
+.modal-background.appear{
+    animation: fadeIn;
+    animation-duration: 800ms;
+}
+
+.modal-card.appear{
+    animation: fadeInDown;
+    animation-duration: 800ms;
+}
+
+.modal-background.disappear{
+    animation: fadeOut;
+    animation-duration: 800ms;
+}
+
+.modal-card.disappear{
+    animation: fadeOutUp;
+    animation-duration: 800ms;
+}

@@ -1,3 +1,4 @@
+/* AUTHOR: capt-pancakes */
 "use strict";
 const bulbox = {
     alert: _alert,
@@ -31,23 +32,18 @@ function _alert(obj) {
     if (!obj.title)
         obj.title = "Alert!";
 
-    var ops = __mergeOptions(obj);
-    __buildDialog(ops);
+    __buildDialog(obj);
 }
 
 function _dialog(obj) {
     if (obj.bodyIsHtml === undefined) obj.bodyIsHtml = true;
-    var ops = __mergeOptions(obj);
-    console.log(ops);
-    __buildDialog(ops);
+    __buildCustomDialog(obj);
 }
 
 function _confirm(obj) {
     if (obj && !obj.title)
         obj.title = "Please Confirm";
-    var ops = __mergeOptions(obj);
-    console.log(ops);
-    __buildDialog(ops);
+    __buildDialog(obj);
 }
 
 function __buildDialog({ title, body, buttons, callback, size, bodyIsHtml }) {
@@ -56,11 +52,11 @@ function __buildDialog({ title, body, buttons, callback, size, bodyIsHtml }) {
     parent.id = "bulbox-diag-" + __newId();
 
     const backdrop = document.createElement("div");
-    backdrop.className = "modal-background animate__animated animate__fadeIn animate__faster";
+    backdrop.className = "modal-background appear";
 
     const content = document.createElement("div");
     if (size === 'sm') content.style = "width: 400px";
-    content.className = "modal-card animate__animated animate__fadeInDown animate__faster";
+    content.className = "modal-card appear";
 
 
     // Card Header
@@ -83,7 +79,8 @@ function __buildDialog({ title, body, buttons, callback, size, bodyIsHtml }) {
     if (body) {
         bodyEl.className = "modal-card-body";
         if (bodyIsHtml) {
-            bodyEl.innerHTML = body;
+            console.log("body is", body);
+            bodyEl.innerHTML = body[0].innerHTML;
         } else {
             bodyEl.innerText = body;
         }
@@ -123,9 +120,6 @@ function __buildDialog({ title, body, buttons, callback, size, bodyIsHtml }) {
 
     }
 
-
-
-
     // Build Content
     content.appendChild(contentHeader);
     content.appendChild(bodyEl);
@@ -138,23 +132,51 @@ function __buildDialog({ title, body, buttons, callback, size, bodyIsHtml }) {
     document.body.append(parent);
 }
 
+function __buildCustomDialog({ body, size }) {
+    const parent = document.createElement("div");
+    parent.className = "modal is-active";
+    parent.id = "bulbox-diag-" + __newId();
+
+    const backdrop = document.createElement("div");
+    backdrop.className = "modal-background appear";
+
+    const content = document.createElement("div");
+    if (size) {
+        if (size === 'sm')
+            content.style = "width: 400px";
+    }
+    content.className = "modal-card appear";
+
+    content.innerHTML = body[0].innerHTML;
+    parent.appendChild(content);
+    document.body.append(parent);
+}
+
 function __killDialog(id) {
     const el = document.querySelector('#' + id);
-    el.firstElementChild.className = "modal-background animate__animated animate__fadeOut animate__faster";
-    el.lastElementChild.className = "modal-card animate__animated animate__fadeOutUp animate__faster	";
+    el.firstElementChild.className = "modal-background disappear";
+    el.lastElementChild.className = "modal-card disappear";
 
     setTimeout(() => {
         el.parentNode.removeChild(el);
+        bulbox.options = {
+            title: undefined,
+            body: undefined,
+            buttons: {
+                confirm: {
+                    text: 'Okay',
+                    color: 'is-primary',
+                    cb: undefined
+                },
+                dismiss: undefined
+            },
+            size: 'lg',
+            bodyIsHtml: false
+        }
     }, 400);
     //   bulmabox.params = bulmabox.params.filter((q) => q.id != id);
 }
 
-function __mergeOptions(opts) {
-    var buttons = { ...bulbox.options.buttons, ...opts.buttons };
-    var options = { ...bulbox.options, ...opts };
-    options.buttons = buttons;
-    return options;
-}
 
 window["bulbox"] = bulbox;
 function __newId() {
