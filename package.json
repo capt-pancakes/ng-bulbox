@@ -15,7 +15,7 @@
   "author": "capt-pancakes",
   "license": "MIT",
   "dependencies": {
-    "angular": "^1.7.9",
+    "angular": "^1.8.0",
     "animate.css": "^4.1.0",
     "bulma": "^0.8.2"
   }
