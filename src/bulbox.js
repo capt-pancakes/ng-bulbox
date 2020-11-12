@@ -17,7 +17,32 @@ const bulbox = {
       dismiss: undefined
     },
     size: 'lg',
-    bodyIsHtml: false
+    bodyIsHtml: false,
+    animation: 'appear'    
+  },
+  getAnimation: function(){
+    var animIn = "";
+    var animOut = "";
+  
+    switch (this.options.animation) {
+      case 'appear':
+        animIn = 'appear';
+        animOut = 'disappear';
+        break;
+      case 'zoom':
+        animIn = 'zoomIn';
+        animOut = 'zoomOut';
+        break;
+      case 'flip':
+        animIn = 'flipInY';
+        animOut = 'flipOutY';
+        break;
+      default:
+        animIn = 'appear';
+        animOut = 'disappear';
+        break;
+    }
+    return {in: animIn, out: animOut};
   }
 }
 
@@ -25,7 +50,7 @@ const bulbox = {
  Each method expects an object that contains a Title, Body, Okay text, Cancel text, and Okay callback and Cancel callback
 */
 
-function _alert (obj) {
+function _alert(obj) {
   if (!obj) var obj = {}
 
   if (!obj.title) obj.title = 'Alert!'
@@ -33,27 +58,28 @@ function _alert (obj) {
   __buildDialog(obj)
 }
 
-function _dialog (obj) {
+function _dialog(obj) {
   if (obj.bodyIsHtml === undefined) obj.bodyIsHtml = true
   __buildCustomDialog(obj)
 }
 
-function _confirm (obj) {
+function _confirm(obj) {
   if (obj && !obj.title) obj.title = 'Please Confirm'
   __buildDialog(obj)
 }
 
-function __buildDialog ({ title, body, buttons, callback, size, bodyIsHtml }) {
+function __buildDialog({ title, body, buttons, callback, size, bodyIsHtml}) {
+  var animData = window.bulbox.getAnimation();
   const parent = document.createElement('div')
   parent.className = 'modal is-active'
   parent.id = 'bulbox-diag-' + __newId()
 
   const backdrop = document.createElement('div')
-  backdrop.className = 'modal-background appear'
+  backdrop.className = 'modal-background ' + animData.in;
 
   const content = document.createElement('div')
   if (size === 'sm') content.style = 'width: 400px'
-  content.className = 'modal-card appear'
+  content.className = 'modal-card ' + animData.in;
 
   // Card Header
   const contentHeader = document.createElement('div')
@@ -127,19 +153,22 @@ function __buildDialog ({ title, body, buttons, callback, size, bodyIsHtml }) {
   document.body.append(parent)
 }
 
-function __buildCustomDialog ({ body, size, title, buttons, callback }) {
+function __buildCustomDialog({ body, size, title, buttons, callback}) {
+  var animData = window.bulbox.getAnimation();
+
   const parent = document.createElement('div')
   parent.className = 'modal is-active'
   parent.id = 'bulbox-diag-' + __newId()
 
   const backdrop = document.createElement('div')
-  backdrop.className = 'modal-background appear'
+  backdrop.className = 'modal-background ' + animData.in;
 
   const content = document.createElement('div')
   if (size) {
     if (size === 'sm') content.style = 'width: 400px'
   }
-  content.className = 'modal-card appear'
+
+  content.className = 'modal-card ' + animData.in;
 
   // Card Header
   const contentHeader = document.createElement('div')
@@ -181,7 +210,7 @@ function __buildCustomDialog ({ body, size, title, buttons, callback }) {
       if (buttons.confirm) {
         const footerSaveBtn = document.createElement('button')
         let localClasses = 'button ' + buttons.confirm.color
-        if (!buttons.dismiss && (buttons.confirm.size  && buttons.confirm.size !== 'sm')) localClasses += ' is-fullwidth'
+        if (!buttons.dismiss && (buttons.confirm.size && buttons.confirm.size !== 'sm')) localClasses += ' is-fullwidth'
         footerSaveBtn.style = 'margin-left: auto'
         footerSaveBtn.className = localClasses
         footerSaveBtn.innerText = buttons.confirm.text
@@ -202,10 +231,12 @@ function __buildCustomDialog ({ body, size, title, buttons, callback }) {
   document.body.append(parent)
 }
 
-function __killDialog (id) {
+function __killDialog(id) {
+  var animData = window.bulbox.getAnimation();
+
   const el = document.querySelector('#' + id)
-  el.firstElementChild.className = 'modal-background disappear'
-  el.lastElementChild.className = 'modal-card disappear'
+  el.firstElementChild.className = 'modal-background ' + animData.out;
+  el.lastElementChild.className = 'modal-card ' + animData.out;
 
   setTimeout(() => {
     el.parentNode.removeChild(el)
@@ -221,14 +252,15 @@ function __killDialog (id) {
         dismiss: undefined
       },
       size: 'lg',
-      bodyIsHtml: false
+      bodyIsHtml: false,
+      animation: 'appear'
     }
   }, 400)
   //   bulmabox.params = bulmabox.params.filter((q) => q.id != id);
 }
 
 window['bulbox'] = bulbox
-function __newId () {
+function __newId() {
   return 'xxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8

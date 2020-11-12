@@ -1,3 +1,5 @@
+/* fade in animation */
+
 .modal-background.appear{
     animation: fadeIn;
     animation-duration: 800ms;
@@ -15,5 +17,49 @@
 
 .modal-card.disappear{
     animation: fadeOutUp;
+    animation-duration: 800ms;
+}
+
+/* flip animation */
+
+.modal-background.flip{
+    animation: fadeIn;
+    animation-duration: 800ms;
+}
+
+.modal-card.flip{
+    animation: flipInY;
+    animation-duration: 800ms;
+}
+
+.modal-background.flipout{
+    animation: fadeOut;
+    animation-duration: 800ms;
+}
+
+.modal-card.flipout{
+    animation: flipOutY;
+    animation-duration: 800ms;
+}
+
+/* zoom in animation */
+
+.modal-background.zoom{
+    animation: fadeIn;
+    animation-duration: 800ms;
+}
+
+.modal-card.zoom{
+    animation: zoomIn;
+    animation-duration: 800ms;
+}
+
+.modal-background.zoomout{
+    animation: fadeOut;
+    animation-duration: 800ms;
+}
+
+.modal-card.zoomout{
+    animation: zoomOut;
     animation-duration: 800ms;
 }
